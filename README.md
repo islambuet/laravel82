@@ -15,3 +15,7 @@ php artisan make:livewire HomeComponent
 php artisan make:livewire theme.Header
 
 php artisan storage:link
+// Route::get('/linkstorage', function () {
+//     Artisan::call('storage:link');
+// });
+//hit the link to create storage link at live server
