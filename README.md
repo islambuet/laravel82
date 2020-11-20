@@ -13,3 +13,5 @@ npm run dev
 
 php artisan make:livewire HomeComponent
 php artisan make:livewire theme.Header
+
+php artisan storage:link
