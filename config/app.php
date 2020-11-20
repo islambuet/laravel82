@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => isset($_COOKIE['language'])?$_COOKIE['language']:'en',
 
     /*
     |--------------------------------------------------------------------------
