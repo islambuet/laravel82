@@ -24,7 +24,7 @@ trait HasProfilePhoto
             ])->save();
 
             if ($previous) {
-                Storage::disk($this->profilePhotoDisk())->delete($previous);
+                //Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
     }
