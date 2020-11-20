@@ -10,3 +10,6 @@ php artisan migrate
 
 npm install
 npm run dev
+
+php artisan make:livewire HomeComponent
+php artisan make:livewire theme.Header
