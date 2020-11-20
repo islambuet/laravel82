@@ -16,8 +16,8 @@
             @csrf
 
             <div>
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-jet-label for="email" value="{{ __('Mobile No') }}" />
+                <x-jet-input id="email" class="block mt-1 w-full" type="text" name="mobile_no" :value="old('mobile_no')" required autofocus />
             </div>
 
             <div class="mt-4">
