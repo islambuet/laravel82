@@ -19,3 +19,5 @@ php artisan storage:link
 //     Artisan::call('storage:link');
 // });
 //hit the link to create storage link at live server
+
+use WithPagination; inside class must

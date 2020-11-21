@@ -5,9 +5,10 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\HelperClasses\ModuleTaskHelper;
 use App\Models\Product;
-//use Livewire\WithPagination;
+use Livewire\WithPagination;
 class SetupProducts extends Component
 {
+    use WithPagination;
     public $permissions=array();
 
     public $item; 
@@ -90,7 +91,7 @@ class SetupProducts extends Component
     }
     public  function setSearch($search=array())
     {
-        $this->item=array();        
+        $this->search=array();        
         $this->search['name']=isset($search['name'])?$search['name']:'';        
         $this->search['status']=isset($search['status'])?$search['status']:'Active';
     }

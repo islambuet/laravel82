@@ -53,12 +53,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($items as $item)
+                    @foreach ($items as $itemList)
                     <tr>
-                        <td>{{$item->id}}</td>
-                        <td>{{$item->name}}</td>                        
-                        <td>{{$item->price}}</td>                        
-                        <td>{{$item->status}}</td>                        
+                        <td>{{$itemList->id}}</td>
+                        <td>{{$itemList->name}}</td>                        
+                        <td>{{$itemList->price}}</td>                        
+                        <td>{{$itemList->status}}</td>                        
                          
                         @if (($permissions['action_2']==1)||($permissions['action_3']==1))
                         <td>
@@ -66,11 +66,11 @@
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     @if (($permissions['action_2']==1))
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalAddEdit" wire:click="getItem({{$item->id}})">{{__('Edit')}}</button>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="getItem({{$item->id}})">{{__('Picture')}}</button>
+                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalAddEdit" wire:click="getItem({{$itemList->id}})">{{__('Edit')}}</button>
+                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="getItem({{$itemList->id}})">{{__('Picture')}}</button>
                                     @endif
                                     @if (($permissions['action_3']==1))
-                                        <button class="dropdown-item" wire:click="deleteItem({{$item->id}})">{{__('Delete')}}</button>
+                                        <button class="dropdown-item" wire:click="deleteItem({{$itemList->id}})">{{__('Delete')}}</button>
                                     @endif
                                 </div>
                               </div>
@@ -80,7 +80,7 @@
                         
                     @endforeach
                 </tbody>
-            </table>
+            </table>            
             {{$items->links()}}
         </div>
     </div>
