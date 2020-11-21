@@ -12,7 +12,7 @@ class SetupProducts extends Component
     public $permissions=array();
 
     public $item; 
-    //public $items;  
+    public $csvString="";  
     public $search;
     protected $paginationTheme = 'bootstrap';
     protected $rules = [
@@ -89,11 +89,15 @@ class SetupProducts extends Component
         $this->emit("hideModal");
         
     }
-    public  function setSearch($search=array())
+    public function setSearch($search=array())
     {
         $this->search=array();        
         $this->search['name']=isset($search['name'])?$search['name']:'';        
         $this->search['status']=isset($search['status'])?$search['status']:'Active';
+    }
+    public function downloadCsv()
+    {
+        $this->emit("downloadCsv",$this->csvString,'product.csv');
     }
     public function render()
     {
@@ -101,7 +105,13 @@ class SetupProducts extends Component
                 ->where('name','LIKE','%'.$this->search['name'].'%')
                 ->where('status','LIKE','%'.$this->search['status'].'%')
                 ->where('status','!=','Deleted')
-                ->paginate(2);
+                ->paginate(10);
+        $this->csvString=array();
+        $this->csvString[]=array("Product Name",'Price',"status");        
+        foreach($items as $csvItem)
+        {
+            $this->csvString[]=array($csvItem['name'],$csvItem['price'],$csvItem['status']);            
+        }
         if($this->permissions['action_0']==1)
         {
             return view('livewire.setup-products.list',['items'=>$items])->layout('theme.component');

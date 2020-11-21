@@ -27,7 +27,7 @@
                     <button class="btn btn-primary"  onclick="window.print();">{{__('Print')}}</button>                        
                     @endif
                     @if ($permissions['action_5']==1)
-                    <button class="btn btn-primary"  onclick="window.print();">{{__('CSV')}}</button>                        
+                    <button class="btn btn-primary"  wire:click="downloadCsv()">{{__('CSV')}}</button>                        
                     @endif
                 </div>
             </div>

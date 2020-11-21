@@ -50,6 +50,26 @@
         @stack('modals')
         <script type="text/javascript" src="{{ asset('theme/js/theme.js') }}"></script>
         @livewireScripts
+        <script>
+            Livewire.on('downloadCsv', function(data,filename='output.csv'){  
+                var csvStr="";
+                for(var i=0;i<data.length;i++)
+                {
+                    for(var j=0;j<data[i].length;j++)
+                    {
+                        csvStr=csvStr+'"'+data[i][j]+'",';
+                    }
+                    csvStr+="\n";
+                }
+                var hiddenElement = document.createElement('a');
+                hiddenElement.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURI(csvStr);
+                hiddenElement.target = '_blank';
+                hiddenElement.download = filename;
+                hiddenElement.click();                    
+                
+                
+            })
+            </script>
         @yield('jsInline')
     </body>
 </html>
