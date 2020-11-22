@@ -1,6 +1,4 @@
-@extends('theme.controller')
-@section('content')
-<div class="row justify-content-center">
+<div class="row justify-content-center m-0">
     <div class="col-sm-6">
         <div class="text-center pt-2">
             <h1 class="text-error mt-4">404</h1>
@@ -12,4 +10,3 @@
 
     </div><!-- end col -->
 </div>
-@endsection

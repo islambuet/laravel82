@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\NotFoundComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\SetupProducts;
 
@@ -26,3 +27,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 // });
 
 Route::get('/setup_products',SetupProducts::class)->name('setup_products');
+Route::fallback(NotFoundComponent::class);

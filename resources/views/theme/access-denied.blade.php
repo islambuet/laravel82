@@ -1,4 +1,4 @@
-<div class="row justify-content-center">
+<div class="row justify-content-center m-0">
     <div class="col-sm-6">
         <div class="text-center pt-2">
             <h1 class="text-error mt-4">403</h1>
