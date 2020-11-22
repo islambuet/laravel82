@@ -8,10 +8,10 @@
           </button>
         </div>
         <div class="modal-body">            
-          Are you sure to delete {{$item['name']}}             
+          Are you sure to delete this picture            
         </div>  
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" wire:click="deleteItem()">Yes</button>
+          <button type="button" class="btn btn-primary" wire:click="deletePicture()">Yes</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
         </div>        
       </div>

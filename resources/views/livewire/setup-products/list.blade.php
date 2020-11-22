@@ -34,6 +34,7 @@
                     @endif
                 </div>
             </div>
+            <div style="overflow-x:auto ">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -87,6 +88,7 @@
                 </tbody>
             </table>            
             {{$items->links()}}
+            </div>
         </div>
     </div>
     @section('jsInline')
@@ -103,10 +105,13 @@
         Livewire.on('showModalDeleteConfirm', function(){            
             $("#modalConfirmDelete").modal('show');                        
         });
+        Livewire.on('showModalPictures', function(){            
+            $("#modalPictures").modal('show');                        
+        });
         Livewire.on('hideModalDeleteConfirmPicture', function(){            
             $("#modalConfirmDeletePicture").modal('hide');                        
         });
-        Livewire.on('showModalDeleteConfirmPicture', function(){            
+        Livewire.on('showModalDeleteConfirmPicture', function(){
             $("#modalConfirmDeletePicture").modal('show');                        
         });
         </script>

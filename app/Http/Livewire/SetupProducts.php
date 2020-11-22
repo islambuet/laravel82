@@ -15,7 +15,8 @@ class SetupProducts extends Component
     
     public $item; 
     public $pictures=array();
-    public $itemIdPicture=0;
+    public $picture_id=0;
+    
     public $csvString="";  
     public $search;
     protected $paginationTheme = 'bootstrap';
@@ -136,9 +137,43 @@ class SetupProducts extends Component
     }
     public function setPictures($id)
     {
-        $this->itemIdPicture=$id;
-        $this->pictures = ProductPicture::where('product_id', $id)               
-               ->get()->toArray();                              
+        $this->getItem($id,0);        
+        $this->pictures = ProductPicture::where('product_id', $id)  
+                ->where('status','=','Active')             
+               ->get()->toArray();  
+        $this->emit("showModalPictures");                            
+    }
+    public function setPictureItem($id,$action)
+    {
+        $this->picture_id=$id;
+        if($action==3)
+        {
+            $this->emit("showModalDeleteConfirmPicture");            
+        }
+    }
+    public function deletePicture()
+    {
+        $permissions=ModuleTaskHelper::get_permissions('setup_products');
+        if($permissions['action_3']!=1)
+        {
+            session()->flash('alert_message_picture',"You do not have Delete Access");
+            session()->flash('alert_type',"danger");
+        }
+        else
+        {
+            
+            $picture=ProductPicture::find($this->picture_id);
+            $product_id=$picture->product_id;
+            $picture->update(array('status'=>'Deleted'));
+            session()->flash('alert_message_picture',"Picture Deleted");                
+            session()->flash('alert_type',"danger");
+            $this->pictures = ProductPicture::where('product_id', $product_id)  
+                ->where('status','=','Active')             
+               ->get()->toArray(); 
+            
+        }
+        $this->setPictureItem(0,0);
+        $this->emit("hideModalDeleteConfirmPicture");
     }
     public function render()
     {
