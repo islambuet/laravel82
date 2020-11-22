@@ -8,14 +8,17 @@ use App\Models\Product;
 use App\Models\ProductPicture;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 class SetupProducts extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     public $permissions=array();
     
     public $item; 
     public $pictures=array();
     public $picture_id=0;
+    public $picture=null;
     
     public $csvString="";  
     public $search;
@@ -135,21 +138,53 @@ class SetupProducts extends Component
     {
         $this->emit("downloadCsv",$this->csvString,'product.csv');
     }
-    public function setPictures($id)
+    public function setPictures($id,$action)
     {
         $this->getItem($id,0);        
         $this->pictures = ProductPicture::where('product_id', $id)  
                 ->where('status','=','Active')             
                ->get()->toArray();  
-        $this->emit("showModalPictures");                            
+        if($action==0)
+        {
+            $this->picture=null;
+            $this->emit("resetFile");
+            $this->emit("showModalPictures");                            
+        }
+        
+        
     }
     public function setPictureItem($id,$action)
     {
         $this->picture_id=$id;
+        $this->picture=null;
         if($action==3)
         {
             $this->emit("showModalDeleteConfirmPicture");            
         }
+    }
+    public function savePicture()
+    {
+        $permissions=ModuleTaskHelper::get_permissions('setup_products');
+        $this->validate([
+            'picture' => 'required|image|max:10240', // 10MB Max
+        ]);
+        if($permissions['action_1']!=1)
+        {
+            session()->flash('alert_message_picture',"You do not have Edit Access");
+            session()->flash('alert_type',"danger");
+        }
+        else
+        {
+            $picture=$this->picture->store('products/'.$this->item['id'],'public');
+
+            ProductPicture::create(['product_id'=>$this->item['id'],'picture'=>$picture]);
+            session()->flash('alert_message',"Picture Added");                
+            session()->flash('alert_type',"primary");
+            $this->setPictures($this->item['id'],1);
+            $this->picture=null;
+            $this->emit("resetFile");
+        }
+        
     }
     public function deletePicture()
     {
@@ -167,9 +202,7 @@ class SetupProducts extends Component
             $picture->update(array('status'=>'Deleted'));
             session()->flash('alert_message_picture',"Picture Deleted");                
             session()->flash('alert_type',"danger");
-            $this->pictures = ProductPicture::where('product_id', $product_id)  
-                ->where('status','=','Active')             
-               ->get()->toArray(); 
+            $this->setPictures($this->item['id'],3); 
             
         }
         $this->setPictureItem(0,0);

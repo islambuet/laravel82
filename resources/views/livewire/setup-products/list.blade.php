@@ -51,9 +51,7 @@
                                 <option value="In-Active">In-Active</option>
                               </select>
                         </th> 
-                        @if (($permissions['action_2']==1)||($permissions['action_3']==1))
-                        <th>Actions</th>                                                    
-                        @endif                       
+                        <th>Actions</th>                       
                         
                     </tr>
                 </thead>
@@ -66,22 +64,21 @@
                         <td>{{$itemList->num_picture}}</td>                        
                         <td>{{$itemList->status}}</td>                       
                          
-                        @if (($permissions['action_2']==1)||($permissions['action_3']==1))
+                        
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     @if (($permissions['action_2']==1))
-                                        <button class="dropdown-item" wire:click="getItem({{$itemList->id}},2)">{{__('Edit')}}</button>
-                                        <button class="dropdown-item" wire:click="setPictures({{$itemList->id}})">{{__('Picture')}}</button>
+                                        <button class="dropdown-item" wire:click="getItem({{$itemList->id}},2)">{{__('Edit')}}</button>                                        
                                     @endif
+                                    <button class="dropdown-item" wire:click="setPictures({{$itemList->id}},0)">{{__('Picture')}}</button>
                                     @if (($permissions['action_3']==1))
                                     <button class="dropdown-item" wire:click="getItem({{$itemList->id}},3)">{{__('Delete')}}</button>                                        
                                     @endif
                                 </div>
                               </div>
-                        </td>                                                    
-                        @endif                       
+                        </td>                                                                            
                     </tr>
                         
                     @endforeach
@@ -113,6 +110,9 @@
         });
         Livewire.on('showModalDeleteConfirmPicture', function(){
             $("#modalConfirmDeletePicture").modal('show');                        
+        });
+        Livewire.on('resetFile', function(){            
+            $("#formAddPicture")[0].reset();                        
         });
         </script>
 @endsection

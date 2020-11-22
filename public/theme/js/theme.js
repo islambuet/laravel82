@@ -11,6 +11,48 @@ $(document).ready(function () {
     $('#handler_right_sidebar').on('click', function () {
         $('#system_right_sidebar').toggleClass('active');
     });
+    $(document).on("change", ":file", function(event)
+    {
+        if(($(this).is('[class*="file_external"]')))
+        {
+            return;
+        }
+        var container=$(this).attr('data-preview-container');
+        if(container)
+        {
+            console.log("container found");
+            if(this.files && this.files[0])
+            {
+                var file_type=this.files[0].type;
+                if(file_type && file_type.substr(0,5)=="image")
+                {
+                    var preview_height=200;
+                    if($(this).attr('data-preview-height'))
+                    {
+                        preview_height=$(this).attr('data-preview-height');
+                    }
+                    var reader = new FileReader();
+
+                    reader.onload = function (e)
+                    {
+                        var img_tag='<img height="'+preview_height+'" src="'+ e.target.result+'" >';                        
+                        $(container).html(img_tag);
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+                else
+                {
+                    
+                    $(container).html(this.files[0].name);
+                }
+            }
+        }
+        else
+        {
+            console.log('no container');
+        }
+
+    });
 });
 function setCookie(key, value, expiry) 
 {

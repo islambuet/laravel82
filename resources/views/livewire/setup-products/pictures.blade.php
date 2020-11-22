@@ -31,7 +31,7 @@
                     @foreach ($pictures as $itemList)
                     <tr>
                         <td>{{$itemList['id']}}</td>
-                        <td><img src="{{ asset('storage/products/'.$itemList['picture']) }}" style="width:200px;" alt="{{$item['name']}} class="img-thumbnail"></td>
+                        <td><img src="{{ asset('storage/'.$itemList['picture']) }}" style="width:200px;" alt="{{$item['name']}} class="img-thumbnail"></td>
                         @if (($permissions['action_3']==1))
                         <td>
                           <button class="btn btn-danger" wire:click="setPictureItem({{$itemList['id']}},3)">{{__('Delete')}}</button>                          
@@ -42,7 +42,32 @@
                     @endforeach
                 </tbody>
             </table>  
+            @if (($permissions['action_1']==1))
+            
+            <form id="formAddPicture" enctype="multipart/form-data" wire:submit.prevent="savePicture">
+              
+              <div class="row">
+                <div class="form-group col-8">                  
+                  <input type="file" class="form-control" name="picture" wire:model="picture">
+                  @error('picture') <span class="text-danger">{{ $message }}</span> @enderror
+                </div> 
+                <div class="col-4">
+                  <button type="submit" class="btn btn-primary">Add Picture</button>
+                </div>
+              </div>
+              @if ($picture)
+              <div class="row">
+                <div class="col-12">
+                  <img src="{{ $picture->temporaryUrl() }}" style="width:200px;">
+                </div>
+              </div>
+              @endif
+            </form>
+          
+            @endif
+            
         </div>   
+        
         <div class="modal-footer">            
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>       
