@@ -24,7 +24,7 @@
             <div class="card d-print-none">
                 <div class="card-body">                    
                     @if ($permissions['action_1']==1)
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddEdit" wire:click="getItem(0)">{{__('New')}}</button>                        
+                    <button class="btn btn-primary" wire:click="getItem(0,1)">{{__('New')}}</button>                        
                     @endif
                     @if ($permissions['action_4']==1)
                     <button class="btn btn-primary"  onclick="window.print();">{{__('Print')}}</button>                        
@@ -71,11 +71,11 @@
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     @if (($permissions['action_2']==1))
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalAddEdit" wire:click="getItem({{$itemList->id}})">{{__('Edit')}}</button>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="setPictures({{$itemList->id}})">{{__('Picture')}}</button>
+                                        <button class="dropdown-item" wire:click="getItem({{$itemList->id}},2)">{{__('Edit')}}</button>
+                                        <button class="dropdown-item" wire:click="setPictures({{$itemList->id}})">{{__('Picture')}}</button>
                                     @endif
                                     @if (($permissions['action_3']==1))
-                                    <button class="dropdown-item" data-toggle="modal" data-target="#modalConfirmDelete" wire:click="getItem({{$itemList->id}})">{{__('Delete')}}</button>                                        
+                                    <button class="dropdown-item" wire:click="getItem({{$itemList->id}},3)">{{__('Delete')}}</button>                                        
                                     @endif
                                 </div>
                               </div>
@@ -91,10 +91,24 @@
     </div>
     @section('jsInline')
     <script>
-        Livewire.on('hideModal', function(){            
-            $("#modalAddEdit").modal('hide');            
-            $("#modalConfirmDelete").modal('hide');
-        })
+        Livewire.on('hideModalAddEdit', function(){            
+            $("#modalAddEdit").modal('hide');                        
+        });
+        Livewire.on('showModalAddEdit', function(){            
+            $("#modalAddEdit").modal('show');                        
+        });
+        Livewire.on('hideModalDeleteConfirm', function(){            
+            $("#modalConfirmDelete").modal('hide');                        
+        });
+        Livewire.on('showModalDeleteConfirm', function(){            
+            $("#modalConfirmDelete").modal('show');                        
+        });
+        Livewire.on('hideModalDeleteConfirmPicture', function(){            
+            $("#modalConfirmDeletePicture").modal('hide');                        
+        });
+        Livewire.on('showModalDeleteConfirmPicture', function(){            
+            $("#modalConfirmDeletePicture").modal('show');                        
+        });
         </script>
 @endsection
 

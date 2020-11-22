@@ -49,7 +49,7 @@ class SetupProducts extends Component
         $this->item['price']=isset($item['price'])?$item['price']:'';        
         $this->item['status']=isset($item['status'])?$item['status']:'Active';
     }
-    public function getItem($id)
+    public function getItem($id,$action)
     {
         if($id==0)
         {
@@ -58,6 +58,14 @@ class SetupProducts extends Component
         else
         {
             $this->setItem(Product::where('id', $id)->first());
+        }
+        if($action==1 || $action==2)
+        {
+            $this->emit("showModalAddEdit");
+        }
+        else if($action==3)
+        {
+            $this->emit("showModalDeleteConfirm");
         }
     }
     public function saveItem()
@@ -95,7 +103,7 @@ class SetupProducts extends Component
             }            
         }
         $this->setItem(array());
-        $this->emit("hideModal");
+        $this->emit("hideModalAddEdit");
         
     }
     public function deleteItem()
@@ -114,7 +122,7 @@ class SetupProducts extends Component
             session()->flash('alert_type',"danger");
         }
         $this->setItem(array());
-        $this->emit("hideModal");
+        $this->emit("hideModalDeleteConfirm");
     }
     public function setSearch($search=array())
     {
