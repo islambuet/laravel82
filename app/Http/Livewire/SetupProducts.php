@@ -25,6 +25,11 @@ class SetupProducts extends Component
         'item.price' => 'Price',
         'item.status' => 'Status',
     ];
+    //only for real time validation 
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 
     public function mount()
     {
@@ -88,6 +93,24 @@ class SetupProducts extends Component
         $this->setItem(array());
         $this->emit("hideModal");
         
+    }
+    public function deleteItem()
+    {
+        $permissions=ModuleTaskHelper::get_permissions('setup_products');
+        if($permissions['action_3']!=1)
+        {
+            session()->flash('alert_message',"You do not have Delete Access");
+            session()->flash('alert_type',"danger");
+        }
+        else
+        {
+            $item=Product::find($this->item['id']);
+            $item->update(array('status'=>'Deleted'));
+            session()->flash('alert_message',"Product Deleted");                
+            session()->flash('alert_type',"danger");
+        }
+        $this->setItem(array());
+        $this->emit("hideModal");
     }
     public function setSearch($search=array())
     {

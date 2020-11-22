@@ -1,5 +1,6 @@
 <div>   
-    @include('livewire.setup-products.add-edit')
+    @include('livewire.setup-products.add-edit');
+    @include('livewire.setup-products.delete');
     <style>
         svg{
             max-height: 20px;
@@ -70,7 +71,7 @@
                                         <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="getItem({{$itemList->id}})">{{__('Picture')}}</button>
                                     @endif
                                     @if (($permissions['action_3']==1))
-                                        <button class="dropdown-item" wire:click="deleteItem({{$itemList->id}})">{{__('Delete')}}</button>
+                                    <button class="dropdown-item" data-toggle="modal" data-target="#modalDelete" wire:click="getItem({{$itemList->id}})">{{__('Delete')}}</button>                                        
                                     @endif
                                 </div>
                               </div>
@@ -88,6 +89,7 @@
     <script>
         Livewire.on('hideModal', function(){            
             $("#modalAddEdit").modal('hide');            
+            $("#modalDelete").modal('hide');            
         })
         </script>
 @endsection
