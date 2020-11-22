@@ -5,14 +5,17 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\HelperClasses\ModuleTaskHelper;
 use App\Models\Product;
+use App\Models\ProductPicture;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 class SetupProducts extends Component
 {
     use WithPagination;
     public $permissions=array();
-
+    
     public $item; 
+    public $pictures=array();
+    public $itemIdPicture=0;
     public $csvString="";  
     public $search;
     protected $paginationTheme = 'bootstrap';
@@ -123,23 +126,29 @@ class SetupProducts extends Component
     {
         $this->emit("downloadCsv",$this->csvString,'product.csv');
     }
+    public function setPictures($id)
+    {
+        $this->itemIdPicture=$id;
+        $this->pictures = ProductPicture::where('product_id', $id)               
+               ->get()->toArray();                              
+    }
     public function render()
     {
-        // $items=Product::orderBy('id', 'DESC')
-        //         ->where('name','LIKE','%'.$this->search['name'].'%')
-        //         ->where('status','LIKE','%'.$this->search['status'].'%')
-        //         ->where('status','!=','Deleted')
-        //         ->paginate(10);
-        // DB::table('website_tags')
-        // ->join('assigned_tags', 'website_tags.id', '=', 'assigned_tags.tag_id')
-        // ->select('website_tags.id as id', 'website_tags.title as title', DB::raw("count(assigned_tags.tag_id) as count"))
-        // ->groupBy('website_tags.id')
-        // ->get();
+        DB::enableQueryLog();
         $items=DB::table('products as p')
-            ->leftJoin('product_pictures as pp', 'pp.product_id', '=', 'p.id')
+            // ->leftJoin('product_pictures as pp', 'pp.product_id', '=', 'p.id')
+            ->leftJoin('product_pictures as pp', function($join)
+            {
+                $join->on('p.id', '=', 'pp.product_id');
+                $join->on('pp.status', '!=', DB::raw('"Deleted"'));
+            })
             ->select('p.*')
             ->addSelect(DB::raw('count(pp.id) num_picture'))
             ->groupBy('p.id')
+            ->orderBy('p.id', 'desc')
+            ->where('p.status','!=','Deleted') 
+            ->where('p.name','LIKE','%'.$this->search['name'].'%')
+            ->where('p.status','LIKE','%'.$this->search['status'].'%')           
             ->paginate(5);
         $this->csvString=array();
         $this->csvString[]=array("Name",'Price',"Picture Count","status");        

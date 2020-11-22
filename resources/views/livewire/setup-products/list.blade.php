@@ -1,11 +1,13 @@
 <div>   
-    @include('livewire.setup-products.add-edit');
-    @include('livewire.setup-products.delete');
+    @include('livewire.setup-products.add-edit')
+    @include('livewire.setup-products.confirm-delete')
+    @include('livewire.setup-products.pictures')
+    @include('livewire.setup-products.confirm-delete-picture')
     <style>
         svg{
             max-height: 20px;
         }
-    </style>    
+    </style>      
     <div class="card m-2">
         <div class="card-header">
             <h3>{{__('Product List')}}</h3> 
@@ -70,10 +72,10 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     @if (($permissions['action_2']==1))
                                         <button class="dropdown-item" data-toggle="modal" data-target="#modalAddEdit" wire:click="getItem({{$itemList->id}})">{{__('Edit')}}</button>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="getItem({{$itemList->id}})">{{__('Picture')}}</button>
+                                        <button class="dropdown-item" data-toggle="modal" data-target="#modalPictures" wire:click="setPictures({{$itemList->id}})">{{__('Picture')}}</button>
                                     @endif
                                     @if (($permissions['action_3']==1))
-                                    <button class="dropdown-item" data-toggle="modal" data-target="#modalDelete" wire:click="getItem({{$itemList->id}})">{{__('Delete')}}</button>                                        
+                                    <button class="dropdown-item" data-toggle="modal" data-target="#modalConfirmDelete" wire:click="getItem({{$itemList->id}})">{{__('Delete')}}</button>                                        
                                     @endif
                                 </div>
                               </div>
@@ -91,7 +93,7 @@
     <script>
         Livewire.on('hideModal', function(){            
             $("#modalAddEdit").modal('hide');            
-            $("#modalDelete").modal('hide');            
+            $("#modalConfirmDelete").modal('hide');
         })
         </script>
 @endsection
