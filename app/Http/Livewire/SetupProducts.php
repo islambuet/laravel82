@@ -178,7 +178,7 @@ class SetupProducts extends Component
             $picture=$this->picture->store('products/'.$this->item['id'],'public');
 
             ProductPicture::create(['product_id'=>$this->item['id'],'picture'=>$picture]);
-            session()->flash('alert_message',"Picture Added");                
+            session()->flash('alert_message_picture',"Picture Added");                
             session()->flash('alert_type',"primary");
             $this->setPictures($this->item['id'],1);
             $this->picture=null;
