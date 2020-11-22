@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\HelperClasses\ModuleTaskHelper;
 use App\Models\Product;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 class SetupProducts extends Component
 {
     use WithPagination;
@@ -124,16 +125,27 @@ class SetupProducts extends Component
     }
     public function render()
     {
-        $items=Product::orderBy('id', 'DESC')
-                ->where('name','LIKE','%'.$this->search['name'].'%')
-                ->where('status','LIKE','%'.$this->search['status'].'%')
-                ->where('status','!=','Deleted')
-                ->paginate(10);
+        // $items=Product::orderBy('id', 'DESC')
+        //         ->where('name','LIKE','%'.$this->search['name'].'%')
+        //         ->where('status','LIKE','%'.$this->search['status'].'%')
+        //         ->where('status','!=','Deleted')
+        //         ->paginate(10);
+        // DB::table('website_tags')
+        // ->join('assigned_tags', 'website_tags.id', '=', 'assigned_tags.tag_id')
+        // ->select('website_tags.id as id', 'website_tags.title as title', DB::raw("count(assigned_tags.tag_id) as count"))
+        // ->groupBy('website_tags.id')
+        // ->get();
+        $items=DB::table('products as p')
+            ->leftJoin('product_pictures as pp', 'pp.product_id', '=', 'p.id')
+            ->select('p.*')
+            ->addSelect(DB::raw('count(pp.id) num_picture'))
+            ->groupBy('p.id')
+            ->paginate(5);
         $this->csvString=array();
-        $this->csvString[]=array("Product Name",'Price',"status");        
+        $this->csvString[]=array("Name",'Price',"Picture Count","status");        
         foreach($items as $csvItem)
         {
-            $this->csvString[]=array($csvItem['name'],$csvItem['price'],$csvItem['status']);            
+            $this->csvString[]=array($csvItem->name,$csvItem->price,$csvItem->num_picture,$csvItem->status);            
         }
         if($this->permissions['action_0']==1)
         {

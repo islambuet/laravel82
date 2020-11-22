@@ -1,3 +1,0 @@
-<div>
-    Product Component
-</div>

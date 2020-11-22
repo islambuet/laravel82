@@ -40,6 +40,7 @@
                             <input type="text" class="form-control d-print-none" wire:model="search.name" placeholder="Search Name">
                         </th>     
                         <th>Price</th>                                                            
+                        <th>Picture Count</th>                                                            
                         <th>Type
                             <select class="form-control d-print-none" wire:model="search.status">>
                                 <option value="">Search Status</option>
@@ -59,7 +60,8 @@
                         <td>{{$itemList->id}}</td>
                         <td>{{$itemList->name}}</td>                        
                         <td>{{$itemList->price}}</td>                        
-                        <td>{{$itemList->status}}</td>                        
+                        <td>{{$itemList->num_picture}}</td>                        
+                        <td>{{$itemList->status}}</td>                       
                          
                         @if (($permissions['action_2']==1)||($permissions['action_3']==1))
                         <td>
