@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\NotFoundComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\SetupProducts;
+use App\Http\Livewire\ShopComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 // });
 
 Route::get('/setup_products',SetupProducts::class)->name('setup_products');
+Route::get('/shop',ShopComponent::class)->name('shop');
 Route::fallback(NotFoundComponent::class);

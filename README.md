@@ -25,4 +25,4 @@ use WithPagination; inside class must
 DB::raw("'".$param1."'")
 DB::enableQueryLog();
 $lastquery = dd(DB::getQueryLog());
-toArray//returns query result in arary
+toArray()//returns query result in arary
