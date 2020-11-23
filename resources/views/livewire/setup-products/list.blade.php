@@ -84,7 +84,7 @@
                     @endforeach
                 </tbody>
             </table>            
-            {{$items->links()}}
+            {{$items->links('theme.pagination-dropdown')}}            
             </div>
         </div>
     </div>
