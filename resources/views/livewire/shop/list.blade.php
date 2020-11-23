@@ -10,7 +10,7 @@
         <div class="col-6 col-sm-4 pb-2">
             @if(isset($pictures[$product->id]))
                 @if(count($pictures[$product->id])>1)                            
-                    <div id="carousel_{{$product->id}}" class="carousel slide" data-ride="carousel" style="height: 200px!important;">
+                    <div id="carousel_{{$product->id}}" class="carousel slide" data-ride="carousel" style="height: 250px!important;">
                         <div class="carousel-inner">
                             @foreach($pictures[$product->id] as $key=>$picture)
                             <div class="carousel-item {{$key==0?'active':''}}">
@@ -28,12 +28,12 @@
                         </a>
                     </div>
                 @else
-                <div style="height:200px">
+                <div style="height:250px">
                     <img class="d-block" style="max-height: 100%; max-width:100%" src="{{ asset('storage/'.$pictures[$product->id][0]['picture']) }}" alt="comming">
                 </div>                
                 @endif
             @else 
-            <div style="height:200px">
+            <div style="height:250px">
                 <img class="d-block" style="max-height: 100%; max-width:100%" src="{{ asset('storage/products/comming.png') }}" alt="comming">
             </div>                
                 
