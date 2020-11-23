@@ -5,7 +5,7 @@
             filter: invert(100%);
         }
     </style>
-    <div class="row m-0"> 
+    <div class="row m-0 mt-2"> 
         @foreach ($products as $product)
         <div class="col-6 col-sm-4 pb-2">
             @if(isset($pictures[$product->id]))
@@ -42,7 +42,7 @@
             
             <div>{{$product->name}}</div>
             <div>Price :{{$product->price}}</div>
-            <div><input class="btn btn-primary" type="button" value="Buy Now"></div>
+            <div><input class="btn btn-primary" type="button" wire:click="addToCart({{$product->id}})" value="Add to Cart"></div>
 
             
         </div>
