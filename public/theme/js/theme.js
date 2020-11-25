@@ -53,6 +53,22 @@ $(document).ready(function () {
         }
 
     });
+    $(document).on("input", ".float_positive", function(event)
+    {
+        this.value = this.value.replace(/[^0-9.]/g, '').replace('.', 'x').replace(/\./g,'').replace('x','.');
+    });
+    $(document).on("input", ".integer_positive", function(event)
+    {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    $(document).on("input", ".float_all", function(event)
+    {
+        this.value = this.value.replace(/[^0-9.-]/g, '').replace('.', 'x').replace(/\./g,'').replace('x','.').replace(/(?!^)-/g, '');
+    });
+    $(document).on("input", ".integer_all", function(event)
+    {
+        this.value = this.value.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
+    });
 });
 function setCookie(key, value, expiry) 
 {
