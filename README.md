@@ -26,3 +26,5 @@ DB::raw("'".$param1."'")
 DB::enableQueryLog();
 $lastquery = dd(DB::getQueryLog());
 toArray()//returns query result in arary
+
+composer require stripe/stripe-php
