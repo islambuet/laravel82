@@ -9,29 +9,50 @@ use Illuminate\Http\Request;
 
 class CheckoutComponent extends Component
 {
-    public $checkoutState=1;//1=selected 2=payment 3=success 4=failed 
+    public $checkoutState='quantitSelection';//1=selected 2=payment 3=success 4=failed 
     public $products=array();  
+    public $stripePaymentAmount=0;
     public $permissions=array();
-    public function mount()
+    public function mount(Request $request)
     {
-        $this->permissions=ModuleTaskHelper::get_permissions('checkout');        
+        //dd($request->path());
+        if($request->path()=='checkout')
+        {
+            $this->checkoutState="quantitSelection";
+        }
+        else if($request->path()=='checkout/payment')
+        { 
+            $this->checkoutState="payment";
+            $this->goPayment($request->input('quantity'));
+            //dd($request->input('quantity'));
+        }
+        else if($request->path()=='checkout/payment-charge')
+        { 
+            dd($request);
+            //$this->chargePayment($request->all());
+            
+        }
+        //dd($request);
+        $this->permissions=ModuleTaskHelper::get_permissions('checkout');   
+        
     }    
-    public function goState1()
+    public function goQuantitSelection()
     {   
-        $this->checkoutState=1;
+        $this->checkoutState='quantitSelection';
     }
-    public function goState2($data)
+    public function goPayment($data)
     {   
+        $this->stripePaymentAmount=0;
         $this->products=array();
         if(session()->has('cart') )
         {
             foreach(session('cart') as $item)
             {
-                $item['quantity']=$data['quantity_'.$item['id']];
+                $item['quantity']=$data[$item['id']];
                 $this->products[]=$item;
+                $this->stripePaymentAmount+=($item['quantity']*$item['price']*100);
             }   
-        }
-        $this->checkoutState=2;
+        }        
     }
     public function goState3($data)
     {  

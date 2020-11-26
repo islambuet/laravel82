@@ -1,8 +1,8 @@
 <div> 
-    @if ($checkoutState==1)
-        @include('livewire.checkout.state1')
-    @elseif($checkoutState==2)
-        @include('livewire.checkout.state2')
+    @if ($checkoutState=='quantitSelection')
+        @include('livewire.checkout.quantity-selection')
+    @elseif($checkoutState=='payment')
+        @include('livewire.checkout.payment')
     @endif
     @section('jsInline')
     <script>

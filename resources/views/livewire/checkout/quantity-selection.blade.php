@@ -4,7 +4,8 @@
     </div>
     <div class="card-body">
         @if(session()->has('cart') && count(session('cart'))>0)       
-            <form wire:submit.prevent="goState2(Object.fromEntries(new FormData($event.target)))">
+            <form method="post" action="{{url('checkout/payment')}}">
+                @csrf
                 <table class="table table-bordered" id="checkoutItems">
                     <thead>
                         <tr>
@@ -20,7 +21,7 @@
                             <tr>
                                 <td>{{$product['name']}}</td>
                                 <td id="unitPrice_{{$product['id']}}">{{$product['price']}}</td>
-                                <td><input type="number" data-id="{{$product['id']}}" class="form-control integer_positive quantity" value="1" name="quantity_{{$product['id']}}"></td>
+                                <td><input type="number" data-id="{{$product['id']}}" class="form-control integer_positive quantity" value="1" name="quantity[{{$product['id']}}]"></td>
                                 <td id="price_{{$product['id']}}"></td>
                                 <td><button class="btn btn-danger" type="button" wire:click="removeCartItem({{$product['id']}})">{{__('Remove')}}</button> </td>                            
                             </tr>

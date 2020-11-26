@@ -30,5 +30,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/setup_products',SetupProducts::class)->name('setup_products');
 Route::get('/shop',ShopComponent::class)->name('shop');
-Route::get('/checkout',CheckoutComponent::class)->middleware(['auth:sanctum']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/checkout',CheckoutComponent::class);
+    Route::post('/checkout/payment',CheckoutComponent::class);
+    Route::post('/checkout/payment-charge',CheckoutComponent::class);
+
+});
 Route::fallback(NotFoundComponent::class);

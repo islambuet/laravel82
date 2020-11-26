@@ -3,8 +3,8 @@
         Your Cart
     </div>
     <div class="card-body">
-            
-            <form wire:submit.prevent="goState3(Object.fromEntries(new FormData($event.target)))">
+            <form method="post" action="{{url('checkout/payment-charge')}}">
+                @csrf
                 <table class="table table-bordered" id="checkoutItems">
                     <thead>
                         <tr>
@@ -24,9 +24,19 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right">Total</td>
+                        <td id="total">{{$stripePaymentAmount/100}}</td>
+                        </tr>
+                    </tfoot>
                 </table>
-            </form>            
-            <button class="btn btn-primary" wire:click="goState1" type="button">Go Back</button>
-
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{env('STRIPE_PUBLISHABLE_KEY',false)}}"
+                data-description="Purchase Product"
+                data-amount="{{$stripePaymentAmount}}"
+                data-locale="auto"></script>
+            </form> 
+            <a class="btn btn-primary" href="{{url('checkout')}}">Go Back</a>
     </div>
 </div>
