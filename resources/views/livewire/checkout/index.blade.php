@@ -3,6 +3,10 @@
         @include('livewire.checkout.quantity-selection')
     @elseif($checkoutState=='payment')
         @include('livewire.checkout.payment')
+    @elseif($checkoutState=='paymentSuccess')
+        @include('livewire.checkout.payment-success')
+    @elseif($checkoutState=='paymentFailed')
+        @include('livewire.checkout.payment-failed')
     @endif
     @section('jsInline')
     <script>

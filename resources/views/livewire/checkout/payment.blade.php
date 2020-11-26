@@ -37,6 +37,19 @@
                 data-amount="{{$stripePaymentAmount}}"
                 data-locale="auto"></script>
             </form> 
+            <div>
+                
+                Example card: 4242424242424242
+                <br>
+                Date: Any future date
+                <br>
+                CVC: Any 3 digits
+                <br>
+                For More testing go here <a href="https://stripe.com/docs/testing">https://stripe.com/docs/testing</a>                
+            </div>
+            
+
+            
             <a class="btn btn-primary" href="{{url('checkout')}}">Go Back</a>
     </div>
 </div>

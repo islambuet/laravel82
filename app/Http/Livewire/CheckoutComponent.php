@@ -6,13 +6,16 @@ use Livewire\Component;
 use App\HelperClasses\ModuleTaskHelper;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Stripe\Stripe;
+use Stripe\Customer;
+use Stripe\Charge;
 class CheckoutComponent extends Component
 {
-    public $checkoutState='quantitSelection';//1=selected 2=payment 3=success 4=failed 
+    public $checkoutState='quantitSelection';//quantitSelection,payment,paymentSuccess,paymentFailed
     public $products=array();  
     public $stripePaymentAmount=0;
     public $permissions=array();
+    public $paymentFailMessage="";
     public function mount(Request $request)
     {
         //dd($request->path());
@@ -28,8 +31,8 @@ class CheckoutComponent extends Component
         }
         else if($request->path()=='checkout/payment-charge')
         { 
-            dd($request);
-            //$this->chargePayment($request->all());
+            //dd($request);
+            $this->chargePayment($request->all());
             
         }
         //dd($request);
@@ -54,9 +57,36 @@ class CheckoutComponent extends Component
             }   
         }        
     }
-    public function goState3($data)
-    {  
-        dd($data);
+    public function chargePayment($data)
+    { 
+        //dd($data);
+        try 
+        {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        
+            $customer = Customer::create(array(
+                'email' => $data['stripeEmail'],
+                'source' => $data['stripeToken']
+            ));
+        
+            $charge = Charge::create(array(
+                'customer' => $customer->id,
+                'amount' => 1999,
+                'currency' => 'usd'
+            ));
+            //remove session
+            $this->checkoutState='paymentSuccess';
+        
+            
+        } 
+        //only Exception produce laravel error so should be \Exception
+        catch (\Exception $ex){
+            $this->checkoutState='paymentFailed';
+            $this->paymentFailMessage=$ex->getMessage();
+        }
+
+        
+        
     }
     public function removeCartItem($id)
     {
