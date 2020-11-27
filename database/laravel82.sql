@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2020-11-26 11:09:15
+Date: 2020-11-27 08:50:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,7 +44,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of migrations
@@ -59,6 +59,7 @@ INSERT INTO `migrations` VALUES ('7', '2020_11_19_192821_create_user_groups_tabl
 INSERT INTO `migrations` VALUES ('8', '2020_11_19_192944_create_system_tasks_table', '1');
 INSERT INTO `migrations` VALUES ('9', '2020_11_21_190632_create_products_table', '2');
 INSERT INTO `migrations` VALUES ('10', '2020_11_21_190916_create_product_pictures_table', '2');
+INSERT INTO `migrations` VALUES ('13', '2020_11_27_081017_create_purchases_table', '3');
 
 -- ----------------------------
 -- Table structure for `password_resets`
@@ -243,6 +244,29 @@ INSERT INTO `product_pictures` VALUES ('5', '93', 'products/94/7SZTLzGbbRQe14qvp
 INSERT INTO `product_pictures` VALUES ('6', '93', 'products/94/3MA7F7btG85v59rz7Yxj0EoKokmDK7mvqWFRu89d.jpeg', 'Active', '2020-11-23 07:15:20', '2020-11-23 07:15:20');
 
 -- ----------------------------
+-- Table structure for `purchases`
+-- ----------------------------
+DROP TABLE IF EXISTS `purchases`;
+CREATE TABLE `purchases` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `stripeEmail` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripeToken` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripeCustomerId` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `products` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` double NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of purchases
+-- ----------------------------
+INSERT INTO `purchases` VALUES ('1', '1', 'shaiful@shaiful.me', 'tok_1HrwywC7Qt33rDM6kHiDenhm', 'cus_ISskhnkK6TVvth', '{\"102\":{\"id\":102,\"name\":\"Apple\",\"price\":100,\"status\":\"Active\",\"created_at\":\"2020-11-22T14:49:43.000000Z\",\"updated_at\":\"2020-11-23T01:10:53.000000Z\",\"quantity\":\"1\"}}', '10000', '2020-11-27 08:46:49', '2020-11-27 08:46:49');
+INSERT INTO `purchases` VALUES ('2', '1', 'shaiful@shaiful.me', 'tok_1Hrx1jC7Qt33rDM6VlO6WdJD', 'cus_ISsn8nepKBc7Qt', '{\"102\":{\"id\":102,\"name\":\"Apple\",\"price\":100,\"status\":\"Active\",\"created_at\":\"2020-11-22T14:49:43.000000Z\",\"updated_at\":\"2020-11-23T01:10:53.000000Z\",\"quantity\":\"2\"}}', '20000', '2020-11-27 08:49:42', '2020-11-27 08:49:42');
+
+-- ----------------------------
 -- Table structure for `sessions`
 -- ----------------------------
 DROP TABLE IF EXISTS `sessions`;
@@ -261,10 +285,19 @@ CREATE TABLE `sessions` (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('1mDzWQYwwgXaKV5MKxceEv7nnRj8QL5IXKOsszwK', '1', '::1', 'Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiV290RUJvZ21MakpCTDF4TUlYMGs2U3dreUlSdnl6RUwwdXhsU052dSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly9sb2NhbGhvc3QvY2hlY2tvdXQiO31zOjM6InVybCI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJG9PeEYuS0R0TXBubE5QdWlCWU43c3VLYld2dWJBUkhXblpHbmY3Y1N0YkRnUWZmcWszTEh1IjtzOjIxOiJwYXNzd29yZF9oYXNoX3NhbmN0dW0iO3M6NjA6IiQyeSQxMCRvT3hGLktEdE1wbmxOUHVpQllON3N1S2JXdnViQVJIV25aR25mN2NTdGJEZ1FmZnFrM0xIdSI7czo0OiJjYXJ0IjthOjM6e2k6MTAyO2E6Njp7czoyOiJpZCI7aToxMDI7czo0OiJuYW1lIjtzOjU6IkFwcGxlIjtzOjU6InByaWNlIjtkOjEwMDtzOjY6InN0YXR1cyI7czo2OiJBY3RpdmUiO3M6MTA6ImNyZWF0ZWRfYXQiO3M6Mjc6IjIwMjAtMTEtMjJUMTQ6NDk6NDMuMDAwMDAwWiI7czoxMDoidXBkYXRlZF9hdCI7czoyNzoiMjAyMC0xMS0yM1QwMToxMDo1My4wMDAwMDBaIjt9aTo5NDthOjY6e3M6MjoiaWQiO2k6OTQ7czo0OiJuYW1lIjtzOjU6Ik1hbmdvIjtzOjU6InByaWNlIjtkOjE1MDtzOjY6InN0YXR1cyI7czo2OiJBY3RpdmUiO3M6MTA6ImNyZWF0ZWRfYXQiO047czoxMDoidXBkYXRlZF9hdCI7czoyNzoiMjAyMC0xMS0yM1QwMToxMzowMy4wMDAwMDBaIjt9aTo5MzthOjY6e3M6MjoiaWQiO2k6OTM7czo0OiJuYW1lIjtzOjE1OiJKYW1lc29uIEhpbHBlcnQiO3M6NToicHJpY2UiO2Q6MTM3LjgxO3M6Njoic3RhdHVzIjtzOjY6IkFjdGl2ZSI7czoxMDoiY3JlYXRlZF9hdCI7TjtzOjEwOiJ1cGRhdGVkX2F0IjtOO319fQ==', '1606364371');
+INSERT INTO `sessions` VALUES ('1mDzWQYwwgXaKV5MKxceEv7nnRj8QL5IXKOsszwK', '1', '::1', 'Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiV290RUJvZ21MakpCTDF4TUlYMGs2U3dreUlSdnl6RUwwdXhsU052dSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly9sb2NhbGhvc3QvY2hlY2tvdXQiO31zOjM6InVybCI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJG9PeEYuS0R0TXBubE5QdWlCWU43c3VLYld2dWJBUkhXblpHbmY3Y1N0YkRnUWZmcWszTEh1IjtzOjIxOiJwYXNzd29yZF9oYXNoX3NhbmN0dW0iO3M6NjA6IiQyeSQxMCRvT3hGLktEdE1wbmxOUHVpQllON3N1S2JXdnViQVJIV25aR25mN2NTdGJEZ1FmZnFrM0xIdSI7czo0OiJjYXJ0IjthOjM6e2k6MTAyO2E6Njp7czoyOiJpZCI7aToxMDI7czo0OiJuYW1lIjtzOjU6IkFwcGxlIjtzOjU6InByaWNlIjtkOjEwMDtzOjY6InN0YXR1cyI7czo2OiJBY3RpdmUiO3M6MTA6ImNyZWF0ZWRfYXQiO3M6Mjc6IjIwMjAtMTEtMjJUMTQ6NDk6NDMuMDAwMDAwWiI7czoxMDoidXBkYXRlZF9hdCI7czoyNzoiMjAyMC0xMS0yM1QwMToxMDo1My4wMDAwMDBaIjt9aTo5NDthOjY6e3M6MjoiaWQiO2k6OTQ7czo0OiJuYW1lIjtzOjU6Ik1hbmdvIjtzOjU6InByaWNlIjtkOjE1MDtzOjY6InN0YXR1cyI7czo2OiJBY3RpdmUiO3M6MTA6ImNyZWF0ZWRfYXQiO047czoxMDoidXBkYXRlZF9hdCI7czoyNzoiMjAyMC0xMS0yM1QwMToxMzowMy4wMDAwMDBaIjt9aTo5MzthOjY6e3M6MjoiaWQiO2k6OTM7czo0OiJuYW1lIjtzOjE1OiJKYW1lc29uIEhpbHBlcnQiO3M6NToicHJpY2UiO2Q6MTM3LjgxO3M6Njoic3RhdHVzIjtzOjY6IkFjdGl2ZSI7czoxMDoiY3JlYXRlZF9hdCI7TjtzOjEwOiJ1cGRhdGVkX2F0IjtOO319fQ==', '1606371972');
+INSERT INTO `sessions` VALUES ('6lrxgLQecC30Izv8bOxZnswSoGrOjAudHcz5siLh', null, '59.127.252.213', 'Mozilla/5.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRmR1RXJUcldaemRZVVdnWDl5UWJtSUJYTFVvVmtpUm5UbHltTGVmMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MTY6Imh0dHA6Ly8xMjcuMC4wLjEiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', '1606368451');
 INSERT INTO `sessions` VALUES ('AlkzCcQjr2TaPnlDqQeTOtK6E3XI0JENz33lQiOS', null, '192.241.238.197', 'Mozilla/5.0 zgrab/0.x', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZVZCMVJIQ3lKaUc1NnFLeHdmN2I1em5GRlFSYTJjZ21YUGNmdDhoTyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMDMuODkuMjcuMTg2L3BvcnRhbC9yZWRsaW9uIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606364576');
+INSERT INTO `sessions` VALUES ('e98gmxDkQtESAEe62kkCE1h5HV78VYIEAetkd2sk', null, '163.172.40.200', 'Mozilla/5.0 zgrab/0.x', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOHR3T2FmRDM3RzJBYkJpMmJJYzlMdmZ6NUNhTUlKcDV2Qk1yNE9lYSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xMDMuODkuMjcuMTg2Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606368276');
 INSERT INTO `sessions` VALUES ('fP41BYLbOvWiFIfILePWRsOEJNCOOYgI7MrNlx8Q', null, '89.40.73.248', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36 SE 2.X MetaSr 1.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiekZnVmVZazlDV0QwOGxIcExIRVFCelBmVGR6Z1BJRXBNNVBWMjNNQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xMDMuODkuMjcuMTg2Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606364625');
+INSERT INTO `sessions` VALUES ('GAuLj3dm8Zlx9xpCV0tPFONhNPEjLPpEdARNOptP', null, '192.241.238.48', 'Mozilla/5.0 zgrab/0.x', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTUtEcUN4UEd5eVFpT3VoQXJqVGw2cUNKRXFHeWtiMzRyZEw2WEk2OSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMDMuODkuMjcuMTg2L2FjdHVhdG9yL2hlYWx0aCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', '1606376020');
 INSERT INTO `sessions` VALUES ('H3onBvE2HtBr9JEJ3EW5o2GN98viOBxM80syeivG', null, '193.177.162.226', 'Mozilla/5.0 zgrab/0.x', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTzNpSU5RcVpVd1F0Z3A0Qnhyc3JrMjBKUGtIMzB5MVlsWnNXcHoyYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xMDMuODkuMjcuMTg2Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606364897');
+INSERT INTO `sessions` VALUES ('icEzyn0dvaQvVxxTTjmHC1Segq6pwKrlIoX1Hw2i', null, '83.180.53.194', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoib09PQW04RGlLcWt4a3RSN3VMODdoTHJHdDNaWnFkWm9TSEhidUxUVyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xMDMuODkuMjcuMTg2Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606372171');
+INSERT INTO `sessions` VALUES ('Io8e1oJN88SGZ6fG7o56sGiVSlPsfY66bgJsXGQ7', null, '104.136.130.152', '', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNUJVM3E0bW1kYmE0QmVlV3BBb0R4Tmc0ekZ3WHRNcENNaHI4SU45ZyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjEwOiJodHRwOi8vbG9jYWxob3N0L3NldHVwLmNnaT9jbWQ9cm0lMjAtcmYlMjAlMkZ0bXAlMkYlMkElM0J3Z2V0JTIwaHR0cCUzQSUyRiUyRjE5Mi4xNjguMS4xJTNBODA4OCUyRk1vemkubSUyMC1PJTIwJTJGdG1wJTJGbmV0Z2VhciUzQnNoJTIwbmV0Z2VhciZjdXJwYXRoPSUyRiZjdXJyZW50c2V0dGluZ19odG09MSZuZXh0X2ZpbGU9bmV0Z2Vhci5jZmcmdG9kbz1zeXNjbWQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', '1606368695');
+INSERT INTO `sessions` VALUES ('MxzIvOURW828KFYUxdFSYoMao8AjxmgkfESQbL08', '1', '::1', 'Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiQWhhU3YxTGhES0pJRmFHRHgxRkIyRjJQTDFOWjBnQlRrTGlRcHRoaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDg6Imh0dHA6Ly9sb2NhbGhvc3QvdGhlbWUvY3NzL2Jvb3RzdHJhcC5taW4uY3NzLm1hcCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkb094Ri5LRHRNcG5sTlB1aUJZTjdzdUtiV3Z1YkFSSFduWkduZjdjU3RiRGdRZmZxazNMSHUiO3M6MjE6InBhc3N3b3JkX2hhc2hfc2FuY3R1bSI7czo2MDoiJDJ5JDEwJG9PeEYuS0R0TXBubE5QdWlCWU43c3VLYld2dWJBUkhXblpHbmY3Y1N0YkRnUWZmcWszTEh1Ijt9', '1606445384');
+INSERT INTO `sessions` VALUES ('nUZQVB9x4nrzEwTh4WpJ2MLHghJaoOUBYLjrRgj9', null, '149.3.85.127', '', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoic2lZMldVUFUzTGFHdFJYNzcxOWhpZURiUWpmZ3BOdVZaRVJRZThCQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjEyOiJodHRwOi8vbG9jYWxob3N0L3NldHVwLmNnaT9jbWQ9cm0lMjAtcmYlMjAlMkZ0bXAlMkYlMkElM0J3Z2V0JTIwaHR0cCUzQSUyRiUyRjE0OS4zLjg1LjEyNyUzQTM0NDU1JTJGTW96aS5tJTIwLU8lMjAlMkZ0bXAlMkZuZXRnZWFyJTNCc2glMjBuZXRnZWFyJmN1cnBhdGg9JTJGJmN1cnJlbnRzZXR0aW5nX2h0bT0xJm5leHRfZmlsZT1uZXRnZWFyLmNmZyZ0b2RvPXN5c2NtZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', '1606368501');
+INSERT INTO `sessions` VALUES ('uZYI7loP1zBDbMXsExMc95kGHDKx4qEcsK6CwJH7', null, '2.57.122.186', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNmhjT05BeVA3TUtTNmJWSEdTbDFtVGFuVm9kc3hsZk51eHZ3NW9uaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMDMuODkuMjcuMTg2L2NvbmZpZy9nZXR1c2VyP2luZGV4PTAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', '1606369811');
+INSERT INTO `sessions` VALUES ('wnnjs9fQijCE4Egggjig13CUX0z37XEX233Jeowt', null, '103.237.32.194', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYWozVjhUMzVPQ0N3ZVIxc3VVTlRrbXlFVXEwc1NOQ2hRS0FDcVRNaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xMDMuODkuMjcuMTg2Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1606442308');
 INSERT INTO `sessions` VALUES ('XB6cRHauZGeZcKztTry2EYFWFETKPAMf5Ohd80wO', null, '2.57.122.186', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidlBVUllEWVlPYmNKUlpNeEtLSHJma3pVdlVXazIyMUJ5aEZSU1pMZSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMDMuODkuMjcuMTg2L2NvbmZpZy9nZXR1c2VyP2luZGV4PTAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', '1606363944');
 
 -- ----------------------------
