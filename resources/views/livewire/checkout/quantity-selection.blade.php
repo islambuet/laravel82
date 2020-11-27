@@ -21,7 +21,7 @@
                             <tr>
                                 <td>{{$product['name']}}</td>
                                 <td id="unitPrice_{{$product['id']}}">{{$product['price']}}</td>
-                                <td><input type="number" data-id="{{$product['id']}}" class="form-control integer_positive quantity" value="1" name="quantity[{{$product['id']}}]"></td>
+                                <td><input type="number" data-id="{{$product['id']}}" class="form-control integer_positive quantity" value="{{$product['quantity']}}" name="quantity[{{$product['id']}}]"></td>
                                 <td id="price_{{$product['id']}}"></td>
                                 <td><button class="btn btn-danger" type="button" wire:click="removeCartItem({{$product['id']}})">{{__('Remove')}}</button> </td>                            
                             </tr>

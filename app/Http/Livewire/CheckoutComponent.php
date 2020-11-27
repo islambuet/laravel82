@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\HelperClasses\ModuleTaskHelper;
 use App\Models\Product;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
+use Illuminate\Support\Facades\Auth;
 class CheckoutComponent extends Component
 {
     public $checkoutState='quantitSelection';//quantitSelection,payment,paymentSuccess,paymentFailed
@@ -49,12 +51,16 @@ class CheckoutComponent extends Component
         $this->products=array();
         if(session()->has('cart') )
         {
-            foreach(session('cart') as $item)
+            $cart=session('cart');
+
+            foreach($cart as $key=>$item)
             {
+                $cart[$key]['quantity']=$data[$item['id']];
                 $item['quantity']=$data[$item['id']];
                 $this->products[]=$item;
                 $this->stripePaymentAmount+=($item['quantity']*$item['price']*100);
-            }   
+            }  
+            session()->put('cart', $cart);  
         }        
     }
     public function chargePayment($data)
@@ -68,14 +74,79 @@ class CheckoutComponent extends Component
                 'email' => $data['stripeEmail'],
                 'source' => $data['stripeToken']
             ));
+
+            $cart=session('cart');
+            $this->stripePaymentAmount=0;
+            foreach($cart as $key=>$item)
+            {   
+                $this->stripePaymentAmount+=($item['quantity']*$item['price']*100);
+            }              
+            //insert into db too
         
             $charge = Charge::create(array(
                 'customer' => $customer->id,
-                'amount' => 1999,
+                'amount' => $this->stripePaymentAmount,
                 'currency' => 'usd'
             ));
             //remove session
             $this->checkoutState='paymentSuccess';
+            $purchase=array();
+            $purchase['user_id']=Auth::id();
+            $purchase['stripeEmail']=$data['stripeEmail'];
+            $purchase['stripeToken']=$data['stripeToken'];
+            $purchase['stripeCustomerId']=$customer->id;
+            $purchase['products']=json_encode($cart);
+            $purchase['amount']=$this->stripePaymentAmount;
+            Purchase::create($purchase);
+            //dd($charge);
+            // id: "ch_1HrwyzC7Qt33rDM6t67WOSTu"
+            // object: "charge"
+            // amount: 10000
+            // amount_captured: 10000
+            // amount_refunded: 0
+            // application: null
+            // application_fee: null
+            // application_fee_amount: null
+            // balance_transaction: "txn_1Hrwz0C7Qt33rDM6l6Q1Yt1k"
+            // billing_details: Stripe\StripeObject {#1381 ▶}
+            // calculated_statement_descriptor: "Stripe"
+            // captured: true
+            // created: 1606445209
+            // currency: "usd"
+            // customer: "cus_ISskhnkK6TVvth"
+            // description: null
+            // destination: null
+            // dispute: null
+            // disputed: false
+            // failure_code: null
+            // failure_message: null
+            // fraud_details: []
+            // invoice: null
+            // livemode: false
+            // metadata: Stripe\StripeObject {#1382 ▶}
+            // on_behalf_of: null
+            // order: null
+            // outcome: Stripe\StripeObject {#1386 ▶}
+            // paid: true
+            // payment_intent: null
+            // payment_method: "card_1HrwyvC7Qt33rDM6z5CXMSnu"
+            // payment_method_details: Stripe\StripeObject {#1391 ▶}
+            // receipt_email: null
+            // receipt_number: null
+            // receipt_url: "https://pay.stripe.com/receipts/acct_1HrA8aC7Qt33rDM6/ch_1HrwyzC7Qt33rDM6t67WOSTu/rcpt_ISsk4hN0dyS9CuapPYzwDtSUeFFWJn7"
+            // refunded: false
+            // refunds: Stripe\Collection {#1394 ▶}
+            // review: null
+            // shipping: null
+            // source: Stripe\Card {#1398 ▶}
+            // source_transfer: null
+            // statement_descriptor: null
+            // statement_descriptor_suffix: null
+            // status: "succeeded"
+            // transfer_data: null
+            // transfer_group: null
+
+            session()->forget('cart');
         
             
         } 

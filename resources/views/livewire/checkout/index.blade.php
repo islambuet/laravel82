@@ -21,7 +21,8 @@
                 total+=price;
                 $("#price_"+id).html(price);
             });
-            $("#total").html(total);
+            $("#checkoutItems #total").html(total);
+            console.log(total);
             
         }
         $(document).ready(function()

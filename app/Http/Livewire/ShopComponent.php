@@ -16,24 +16,24 @@ class ShopComponent extends Component
     {
         $this->permissions=ModuleTaskHelper::get_permissions('shop');
     }
-    public function addToCart($id)
+    public function addToCart($id,$quantity)
     {
-        //add to seesion
+        if($quantity<1)
+        {
+            $quantity=0;
+        }
         $cart=array();
         if(session()->has('cart'))
         {
             $cart=session('cart');   
         }
-        
-        
-        if(!(isset($cart[$id])))
+        $product=Product::where('id', $id)->first();
+        if($product)
         {
-            $product=Product::where('id', $id)->first();
-            if($product)
-            {
-                $cart[$id]=$product->toArray();
-            }
-        }        
+            $product->quantity= $quantity;             
+            $cart[$id]=$product->toArray();
+        }
+              
         session()->put('cart', $cart);        
         $this->emit("cartChanged");
     }

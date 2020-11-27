@@ -5,9 +5,12 @@
             filter: invert(100%);
         }
     </style>
+    @php
+    $cart=session('cart');        
+    @endphp
     <div class="row m-0 mt-2"> 
         @foreach ($products as $product)
-        <div class="col-6 col-sm-4 pb-2">
+        <div class="col-6 col-sm-4 pb-2 border">
             @if(isset($pictures[$product->id]))
                 @if(count($pictures[$product->id])>1)                            
                     <div id="carousel_{{$product->id}}" class="carousel slide" data-ride="carousel" style="height: 250px!important;">
@@ -42,7 +45,15 @@
             
             <div>{{$product->name}}</div>
             <div>Price :{{$product->price}}</div>
-            <div><input class="btn btn-primary" type="button" wire:click="addToCart({{$product->id}})" value="Add to Cart"></div>
+            <div class="row">
+                <div class="col-6">
+                <input type="number" id="quantity_{{$product->id}}" value="{{isset($cart[$product->id])?$cart[$product->id]['quantity']:0}}" class="form-control integer_positive" placeholder="Quantity">
+                </div>
+                <div class="col-6">
+                    <input class="btn btn-primary" type="button" wire:click="addToCart({{$product->id}},$('#quantity_{{$product->id}}').val())" value="Add to Cart">
+                </div>
+                
+            </div>
 
             
         </div>

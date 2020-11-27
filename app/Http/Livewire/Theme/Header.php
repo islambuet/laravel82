@@ -29,6 +29,7 @@ class Header extends Component
             session()->put('cart', $cart);  
             $this->cartChanged();
         }
+        return redirect()->to('/shop');//for cart update
         
     }
     public function render()

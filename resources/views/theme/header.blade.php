@@ -42,18 +42,34 @@
                             <thead>
                                 <th>Item Name</th>
                                 <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
                                 <th>Action</th>
                             </thead>
                             <tbody>
+                                @php
+                                    $total=0;
+                                @endphp
                                 @foreach ($cartProducts as $product)
+                                @php
+                                    $total+=($product['quantity']*$product['price']);
+                                @endphp
                                     <tr>
                                         <td>{{$product['name']}}</td>
                                         <td>{{$product['price']}}</td>
+                                        <td>{{$product['quantity']}}</td>
+                                        <td>{{$product['quantity']*$product['price']}}</td>
                                         <td><button class="btn btn-danger" wire:click="removeCartItem({{$product['id']}})">{{__('Remove')}}</button> </td>
                                         
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right">Total</td>
+                                    <td>{{$total}}</td>
+                                </tr>
+                            </tfoot>
                         </table> 
                         <a class="btn btn-primary" href="{{ url('/checkout')}}">{{__('Checkout')}}</a>                   
                         @else       
