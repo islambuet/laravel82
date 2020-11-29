@@ -6,6 +6,7 @@ use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\SetupProducts;
 use App\Http\Livewire\ShopComponent;
 use App\Http\Livewire\CheckoutComponent;
+use App\Http\Livewire\StripeDemoComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/checkout/payment-charge',CheckoutComponent::class);
 
 });
+
+Route::get('/stripedemo',StripeDemoComponent::class);
+Route::post('/stripedemo/payment-charge',StripeDemoComponent::class);
+
 Route::fallback(NotFoundComponent::class);
