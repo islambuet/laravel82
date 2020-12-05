@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 use  App\Http\Controllers\RootController;
-use Illuminate\Support\Str;
+
 
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
 use App\HelperClasses\ModuleTaskHelper;
+use App\HelperClasses\EncryptDecryptHelper;
 
 class UserController extends RootController
 {
@@ -18,22 +19,29 @@ class UserController extends RootController
         );
         
     }   
-    public function initialize(Request $request)
+    public function initialize()
     {
-        return response()->json([
-            'initalize' => "user"],201);
+        $response=array();
+        $response['errorStr'] = '';
+        if($this->user)
+        {
+            $response['user']=$this->getUserInfoForApi($this->user->toArray());           
+        }
+        return response()->json($response, 200); 
     }
     public function login()
     {
         if(Auth::attempt(['email' => $this->request->email, 'password' => $this->request->password,'status'=>'Active']))
+        //if(Auth::check(['email' => $this->request->email,'status'=>'Active']))
+        //if(Auth::check(['email' => request('email'), 'password' => request('password')])) 
         { 
         //if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
-            $user = Auth::user(); 
-            $token = Str::random(60);
+            $user = Auth::user();             
             $user->forceFill([
-                'api_token' => hash('sha256', $token),
+                'api_token' => EncryptDecryptHelper::getUserApiToken($user->id)
             ])->save();
-            $this->userGroupRole=ModuleTaskHelper::getuserGroupRole();
+            $this->user=$user;
+            $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user);
 
             return response()->json(['errorStr' => '','user'=>$this->getUserInfoForApi($user->toArray())], 200); 
         } 

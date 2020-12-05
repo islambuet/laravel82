@@ -34,12 +34,12 @@
             }
             return $permissions;            
         }
-        public static function getuserGroupRole()
+        public static function getuserGroupRole($user)
         {
             $user_group_id=3;
-            if(Auth::user())
+            if($user)
             {
-                $user_group_id=Auth::user()->user_group_id;
+                $user_group_id=$user->user_group_id;
             }
             $role=array();
             $query=UserGroup::where('id', $user_group_id);  
