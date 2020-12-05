@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class NotFoundController extends RootController
 {
-    function __construct()
+    function __construct(Request $request)
     {
-        parent::__construct();        
+        parent::__construct($request);      
         
     }   
     public function index(Request $request)

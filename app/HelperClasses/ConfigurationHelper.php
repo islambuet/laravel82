@@ -13,5 +13,9 @@
                 self::$config[$result->purpose]=$result->config_value;
             }
         }
+        public static function isApiOffline()
+        {
+            return isset(self::$config['SITE_OFF_LINE'])&&(self::$config['SITE_OFF_LINE']==1)?true:false;
+        }
     }
     
