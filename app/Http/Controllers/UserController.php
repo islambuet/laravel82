@@ -34,6 +34,7 @@ class UserController extends RootController
         {
             $response['user']=$this->getUserInfoForApi($this->user->toArray());           
         }
+        $response['visitor']['tasks']=ModuleTaskHelper::getUserTasks(ModuleTaskHelper::getVisitorRole(),$this->language);
         return response()->json($response, 200); 
     }
     public function login()
@@ -48,7 +49,7 @@ class UserController extends RootController
                 'api_token' => EncryptDecryptHelper::getUserApiToken($user->id)
             ])->save();
             $this->user=$user;
-            $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user);
+            $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user->user_group_id);
 
             return response()->json(['errorStr' => '','user'=>$this->getUserInfoForApi($this->user->toArray())], 200); 
         } 

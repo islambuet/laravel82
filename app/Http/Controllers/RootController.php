@@ -22,7 +22,16 @@ class RootController extends Controller
 
         $this->language=in_array( $this->request->language,['en','bn'])?$this->request->language:'en';
         $this->user=Auth::guard('api')->user();
-        $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user);
+        if($this->user)
+        {
+            $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user->user_group_id);
+        }
+        else
+        {
+            $this->userGroupRole=ModuleTaskHelper::getVisitorRole();
+        }
+        
+        
     }   
     private function checkApioffline()
     {

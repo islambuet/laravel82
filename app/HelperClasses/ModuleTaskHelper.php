@@ -6,7 +6,7 @@
     class ModuleTaskHelper
     {
         public static $MAX_MODULE_ACTIONS=9;
-        public static function get_permissions($controller_name)
+        public static function get_permissions($controller_name)//for web
         {
             $user_group_id=3;
             if(Auth::user())
@@ -34,13 +34,8 @@
             }
             return $permissions;            
         }
-        public static function getuserGroupRole($user)
+        public static function getUserGroupRole($user_group_id)
         {
-            $user_group_id=3;
-            if($user)
-            {
-                $user_group_id=$user->user_group_id;
-            }
             $role=array();
             $query=UserGroup::where('id', $user_group_id);  
             for($i=0;$i<self::$MAX_MODULE_ACTIONS;$i++) 
@@ -59,6 +54,10 @@
                 }
             }
             return $role;
+        }
+        public static function getVisitorRole()
+        {
+            return self::getUserGroupRole(3);
         }
         public static function getUserTasks($userGroupRole,$language='en')
         {
