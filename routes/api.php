@@ -21,6 +21,8 @@ use App\Http\Controllers\NotFoundController;
 Route::get('user/initialize', [App\Http\Controllers\UserController::class, 'initialize']);
 Route::get('user/login', [App\Http\Controllers\UserController::class,'login']);
 Route::post('user/login', [App\Http\Controllers\UserController::class,'login']);
+Route::get('user/logout', [App\Http\Controllers\UserController::class,'logout']);
+Route::post('user/logout', [App\Http\Controllers\UserController::class,'logout']);
+Route::post('user/register', [App\Http\Controllers\UserController::class,'register']);
 Route::get('user', [App\Http\Controllers\UserController::class,'getUser']);
-
 Route::fallback([NotFoundController::class,'index']);

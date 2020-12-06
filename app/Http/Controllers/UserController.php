@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\RootController;
 
 
-use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+
 use App\HelperClasses\ModuleTaskHelper;
 use App\HelperClasses\EncryptDecryptHelper;
+
+use App\Models\User;
+use Laravel\Fortify\Rules\Password;
 
 class UserController extends RootController
 {
@@ -43,7 +50,7 @@ class UserController extends RootController
             $this->user=$user;
             $this->userGroupRole=ModuleTaskHelper::getuserGroupRole($this->user);
 
-            return response()->json(['errorStr' => '','user'=>$this->getUserInfoForApi($user->toArray())], 200); 
+            return response()->json(['errorStr' => '','user'=>$this->getUserInfoForApi($this->user->toArray())], 200); 
         } 
         else{ 
             return response()->json(['errorStr'=>'LOGIN_FAILED'], 401); 
@@ -61,13 +68,44 @@ class UserController extends RootController
         $info['tasks']=ModuleTaskHelper::getUserTasks($this->userGroupRole,$this->language);
         return $info;
     }
-    public function getUser(Request $request)
+    public function logout()
+    {   
+        if ($this->user) {
+            $this->user->api_token = null;
+            $this->user->save();
+        }
+        return response()->json(['errorStr' => '','message' => 'User logged out.'], 200);
+    }
+    
+    public function register()
+    {
+        $validator = Validator::make($this->request->all(), [
+            'name_en' => ['required', 'string', 'max:255'],
+            'name_bn' => ['required', 'string', 'max:255'],
+            'mobile_no' => ['required', 'string', 'size:11', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],            
+            'password' => ['required', 'string', new Password]
+        ]);
+        if ($validator->fails()) {         
+            return response()->json(['errorStr' => 'VALIDATION_FAILED','errors' => $validator->errors()], 423);                 
+        }
+        User::create([
+            'name_en' => $this->request->name_en,
+            'name_bn' => $this->request->name_bn,
+            'mobile_no' => $this->request->mobile_no,
+            'email' => $this->request->email,
+            'password' => Hash::make($this->request->password),
+        ]);
+        return $this->login();
+        
+    }
+    public function getUser()
     {
         
         $user = Auth::user(); 
         if($user)
         {
-            return response()->json(['user'=>$user->toArray()], 200); 
+            return response()->json(['errorStr'=>'','user'=>$user->toArray()], 200); 
         }
         else
         {
