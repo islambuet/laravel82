@@ -5,6 +5,7 @@ use App\HelperClasses\ModuleTaskHelper;
 use App\Models\SystemTask;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class ModuleTaskController extends RootController
@@ -79,5 +80,68 @@ class ModuleTaskController extends RootController
         {
             return response()->json(['errorStr'=>'UNAUTHORIZED'], 401);            
         }
+    }
+    public function saveItem()
+    {
+        if($this->request->id>0)
+        {
+            if($this->permissions['action_2']!=1)
+            {
+                return response()->json(['errorStr'=>'UNAUTHORIZED','message'=>"No Edit permission"], 401);                
+            }            
+        }
+        else
+        {
+            if($this->permissions['action_1']!=1)
+            {
+                return response()->json(['errorStr'=>'UNAUTHORIZED','message'=>"No Add permission"], 401);                
+            }                        
+        }
+        
+        $validator = Validator::make($this->request->all(), [
+            'name_en' => ['required', 'string', 'max:255'],
+            'name_bn' => ['required', 'string', 'max:255'],
+            'type' => ['required']
+        ]);
+        if ($validator->fails()) {         
+            return response()->json(['errorStr' => 'VALIDATION_FAILED','errors' => $validator->errors()], 423);                 
+        }
+        try {
+            if($this->request->id>0)
+            {
+                $task = SystemTask::find($this->request->id);
+                $task->name_en = $this->request->name_en;
+                $task->name_bn = $this->request->name_bn;
+                $task->type = $this->request->type;
+                $task->parent = $this->request->parent?$this->request->parent:0;
+                $task->controller = $this->request->controller?$this->request->controller:'';
+                $task->ordering = $this->request->ordering?$this->request->ordering:9999;
+                $task->status = $this->request->status?$this->request->status:'Active';
+                $task->save();
+                return response()->json(['errorStr'=>'UPDATE_SUCCESS','message'=>"Updated Successfully"], 200);
+            }
+            else
+            {
+                SystemTask::create([
+                    'name_en' => $this->request->name_en,
+                    'name_bn' => $this->request->name_bn,
+                    'type' => $this->request->type,
+                    'parent' => $this->request->parent?$this->request->parent:0,
+                    'controller' => $this->request->controller?$this->request->controller:'',
+                    'ordering' => $this->request->ordering?$this->request->ordering:9999,
+                    'status' => $this->request->status?$this->request->status:'Active',
+                    
+                ]);                
+                return response()->json(['errorStr'=>'SAVE_SUCCESS','message'=>"Created Successfully"], 200);
+            }
+            
+            //$test->update($request->all());
+        }
+        
+        catch (\Exception $e) { 
+            return response()->json(['errorStr'=>'SAVE_FAILED','message'=>$e->getMessage ()], 400);
+        }
+        
+        
     }
 }
