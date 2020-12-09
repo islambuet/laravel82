@@ -15,7 +15,7 @@ class NotFoundController extends RootController
     public function index(Request $request)
     {
         return response()->json([
-            'errorStr' => 'NOT_FOUND',
+            'errorStr' => 'PAGE_NOT_FOUND',
             'message'=>'Requested page not found'],404);
            
         

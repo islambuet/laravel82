@@ -28,5 +28,7 @@ Route::get('user', [App\Http\Controllers\UserController::class,'getUser']);
 
 
 Route::get('sys_module_task', [App\Http\Controllers\ModuleTaskController::class, 'initialize']);
+Route::get('sys_module_task/get_items', [App\Http\Controllers\ModuleTaskController::class, 'getItems']);
+Route::get('sys_module_task/get_item/{id}', [App\Http\Controllers\ModuleTaskController::class, 'getItem']);
 
 Route::fallback([NotFoundController::class,'index']);
