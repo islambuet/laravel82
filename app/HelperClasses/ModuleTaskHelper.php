@@ -118,5 +118,37 @@
             return $tree;
 
         }
+        public static function getPermissions($controllerName,$userGroupRole)//forApi
+        {
+            // $CI = & get_instance();
+            //$user=User_helper::get_user();
+            $permissions = array();
+            $task=SystemTask::where('controller', $controllerName)->select('id')->first();            
+            $taskId=$task?$task->id:0;
+            for($i=0; $i<self::$MAX_MODULE_ACTIONS; $i++)
+            {
+                if(strpos($userGroupRole['action_'.$i], ','.$taskId.',')!==false){
+                    $permissions['action_'.$i] = 1;
+                }
+                else
+                {
+                    $permissions['action_'.$i]=0;
+                }
+
+                
+            }
+            // if($user){
+            //     $item=Query_helper::get_info(TABLE_SYSTEM_TASK,array('id'),array('controller = "'.$controller_name.'"', 'status = "'.SYSTEM_STATUS_ACTIVE.'"'),1);
+            //     if($item){
+            //         for($i=0;$i<Module_task_helper::$MAX_MODULE_ACTIONS;$i++)
+            //         {
+            //             if(strpos($user['action_'.$i], ','.$item['id'].',')!==false){
+            //                 $permissions['action_'.$i] = 1;
+            //             }
+            //         }
+            //     }
+            // }
+            return $permissions;
+        }
     }
     
