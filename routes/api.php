@@ -32,4 +32,10 @@ Route::get('sys_module_task/get_items', [App\Http\Controllers\ModuleTaskControll
 Route::get('sys_module_task/get_item/{id}', [App\Http\Controllers\ModuleTaskController::class, 'getItem']);
 Route::post('sys_module_task/save_item', [App\Http\Controllers\ModuleTaskController::class, 'saveItem']);
 
+Route::get('sys_user_group', [App\Http\Controllers\UserGroupController::class, 'initialize']);
+Route::get('sys_user_group/get_items', [App\Http\Controllers\UserGroupController::class, 'getItems']);
+Route::get('sys_user_group/get_item/{id}', [App\Http\Controllers\UserGroupController::class, 'getItem']);
+Route::post('sys_user_group/save_item', [App\Http\Controllers\UserGroupController::class, 'saveItem']);
+Route::post('sys_user_group/save_role/{id}', [App\Http\Controllers\UserGroupController::class, 'saveRole']);
+
 Route::fallback([NotFoundController::class,'index']);

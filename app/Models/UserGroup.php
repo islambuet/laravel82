@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserGroup extends Model
 {
+    protected $fillable = [
+        'name',
+        'status',
+        'ordering'
+    ];
     use HasFactory;
 }
