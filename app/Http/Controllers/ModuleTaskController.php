@@ -26,7 +26,7 @@ class ModuleTaskController extends RootController
         //types
         //item
         $response=array();
-        if($this->permissions['action_0']==0)
+        if($this->permissions['action_0']==1)
         {
             $response['errorStr'] = '';        
             $response['permissions'] = $this->permissions;        
@@ -42,11 +42,11 @@ class ModuleTaskController extends RootController
     public function getItems()
     {
         $response=array();
-        if($this->permissions['action_0']==0)
+        if($this->permissions['action_0']==1)
         {
             $response['errorStr'] = '';  
             $modulesTasks=ModuleTaskHelper::getModulesTasksTableTree();                
-            $response['modulesTasks']=$modulesTasks;  
+            $response['modules_tasks']=$modulesTasks;  
             return response()->json($response, 200); 
         }
         else
@@ -57,7 +57,7 @@ class ModuleTaskController extends RootController
     public function getItem($id)
     {
         $response=array();
-        if($this->permissions['action_0']==0)
+        if($this->permissions['action_0']==1)
         {
             $task=SystemTask::select('id','name_en','name_bn','parent','type','controller','ordering','status')                
                 ->where('id','=', $id)     
@@ -115,10 +115,10 @@ class ModuleTaskController extends RootController
                 $task->type = $this->request->type;
                 $task->parent = $this->request->parent?$this->request->parent:0;
                 $task->controller = $this->request->controller?$this->request->controller:'';
-                $task->ordering = $this->request->ordering?$this->request->ordering:9999;
-                $task->status = $this->request->status?$this->request->status:'Active';
+                $task->ordering = isset($this->request->ordering)?$this->request->ordering:9999;
+                $task->status = ($this->request->status=='Active')?'Active':'In-Active';
                 $task->save();
-                return response()->json(['errorStr'=>'UPDATE_SUCCESS','message'=>"Updated Successfully"], 200);
+                return response()->json(['errorStr'=>'','message'=>"Updated Successfully"], 200);
             }
             else
             {
@@ -128,11 +128,11 @@ class ModuleTaskController extends RootController
                     'type' => $this->request->type,
                     'parent' => $this->request->parent?$this->request->parent:0,
                     'controller' => $this->request->controller?$this->request->controller:'',
-                    'ordering' => $this->request->ordering?$this->request->ordering:9999,
-                    'status' => $this->request->status?$this->request->status:'Active',
+                    'ordering' => isset($this->request->ordering)?$this->request->ordering:9999,
+                    'status' => $this->request->status=='Active'?'Active':'In-Active',
                     
                 ]);                
-                return response()->json(['errorStr'=>'SAVE_SUCCESS','message'=>"Created Successfully"], 200);
+                return response()->json(['errorStr'=>'','message'=>"Created Successfully"], 200);
             }
             
             //$test->update($request->all());
