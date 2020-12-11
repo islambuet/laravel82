@@ -38,4 +38,9 @@ Route::get('sys_user_group/get_item/{id}', [App\Http\Controllers\UserGroupContro
 Route::post('sys_user_group/save_item', [App\Http\Controllers\UserGroupController::class, 'saveItem']);
 Route::post('sys_user_group/save_role/{id}', [App\Http\Controllers\UserGroupController::class, 'saveRole']);
 
+Route::get('setup_users', [App\Http\Controllers\SetupUsersController::class, 'initialize']);
+Route::get('setup_users/get_items', [App\Http\Controllers\SetupUsersController::class, 'getItems']);
+Route::get('setup_users/get_item/{id}', [App\Http\Controllers\SetupUsersController::class, 'getItem']);
+Route::post('setup_users/save_item', [App\Http\Controllers\SetupUsersController::class, 'saveItem']);
+
 Route::fallback([NotFoundController::class,'index']);
