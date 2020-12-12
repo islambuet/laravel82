@@ -60,7 +60,7 @@ class SetupUsersController extends RootController
             $paginator=User::select('*')                
                 ->orderBy('id', 'DESC')     
                 ->where('status','!=','Deleted')     
-                ->paginate(8);
+                ->paginate($this->request->per_page?$this->request->per_page:5);
             
             
             //$response['items']=$paginator->data;  
