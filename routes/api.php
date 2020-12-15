@@ -43,4 +43,5 @@ Route::get('setup_users/get_items', [App\Http\Controllers\SetupUsersController::
 Route::get('setup_users/get_item/{id}', [App\Http\Controllers\SetupUsersController::class, 'getItem']);
 Route::post('setup_users/save_item', [App\Http\Controllers\SetupUsersController::class, 'saveItem']);
 
+Route::post('stripedemo/get_intent', [App\Http\Controllers\StripeDemoController::class, 'getIntent']);
 Route::fallback([NotFoundController::class,'index']);
