@@ -44,4 +44,10 @@ Route::get('setup_users/get_item/{id}', [App\Http\Controllers\SetupUsersControll
 Route::post('setup_users/save_item', [App\Http\Controllers\SetupUsersController::class, 'saveItem']);
 
 Route::post('stripedemo/get_intent', [App\Http\Controllers\StripeDemoController::class, 'getIntent']);
+
+Route::get('shop', [App\Http\Controllers\ShopController::class, 'initialize']);
+Route::get('shop/get_items', [App\Http\Controllers\ShopController::class, 'getItems']);
+Route::get('shop/get_item/{id}', [App\Http\Controllers\ShopController::class, 'getItem']);
+// Route::post('shop/save_item', [App\Http\Controllers\ShopController::class, 'saveItem']);
+
 Route::fallback([NotFoundController::class,'index']);
