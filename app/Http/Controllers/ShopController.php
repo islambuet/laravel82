@@ -61,6 +61,7 @@ class ShopController extends RootController
             $pictures=array();
             foreach($results as $result)
             {
+                $result['picture']=asset('storage/'.$result['picture']);
                 $pictures[$result['product_id']][]=$result;
             } 
             $products=Product::where('status','=','Active')->orderBy('id', 'desc')->get()->toArray();    
@@ -73,7 +74,7 @@ class ShopController extends RootController
                 }
                 else
                 {
-                    $product['pictures']=array();
+                    $product['pictures'][]=array('picture'=>asset('storage/products/comming.png'));
                 }
                 
             }
