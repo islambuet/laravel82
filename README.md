@@ -28,3 +28,11 @@ $lastquery = dd(DB::getQueryLog());
 toArray()//returns query result in arary
 
 composer require stripe/stripe-php
+
+//from github to update
+1.composer install
+2.discard changes from gitdesktop
+3.database
+4.env file
+5.run env key command
+///////////////
